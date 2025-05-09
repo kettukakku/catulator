@@ -1,10 +1,18 @@
 const OPERATORS = {
-  ADD: "+",
-  SUBTRACT: "-",
-  MULTIPLY: "*",
-  DIVIDE: "/",
+  "+": { func: add },
+  "-": { func: subtract },
+  "*": { func: multiply },
+  "/": { func: divide },
 };
-const SYMBOLS = Object.values(OPERATORS);
+const SYMBOLS = Object.keys(OPERATORS);
+
+//--Parts of Statement--//
+let numA = 0;
+let numB = 0;
+let operator = null;
+
+//--HTML Elements--//
+let inputField = document.getElementById("inputField");
 
 //--Operations--//
 function add(a, b) {
@@ -27,27 +35,55 @@ function divide(a, b) {
   return a / b;
 }
 
-function operate(input) {
-  if (!hasOperator(input)) {
-    showWarning("Select an operator!");
+function operate() {
+  if (operator == null) {
+    showWarning("Select an operator before submitting!");
     return;
   }
+
+  let result = OPERATORS[operator].func(numA, numB);
+  inputField.textContent = result;
+  numA = result;
+  numB = 0;
+  operator = null;
 }
 
 function appendToDisplay(text) {
-  let inputField = document.getElementById("inputField");
-  let currentInput = inputField.value;
+  let currentInput = inputField.textContent;
 
   if (hasOperator(currentInput)) {
     showWarning("Press enter before selecting another operator!");
     return;
   }
 
-  inputField.value = currentInput + text;
+  inputField.textContent = currentInput + text;
 }
 
-function showWarning(string) {}
+function showWarning(string) {
+  console.log(string);
+}
 
 function hasOperator(string) {
   return SYMBOLS.some((s) => string.includes(s));
 }
+
+function isNumberChar(string) {
+  return string >= "0" && string <= "9";
+}
+
+//--Event Listeners--//
+document.addEventListener("keypress", function (event) {
+  if (isNumberChar(event.key)) {
+    if (operator == null) {
+      numB = event.key;
+      inputField.textContent = numB;
+    } else {
+      numA = event.key;
+      inputField.textContent = numA;
+    }
+  }
+  if (hasOperator(event.key)) {
+    operator = event.key;
+    inputField.textContent = operator;
+  }
+});
