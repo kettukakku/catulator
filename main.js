@@ -13,6 +13,8 @@ let operator = null;
 
 //--HTML Elements--//
 let inputField = document.getElementById("inputField");
+let numContainer = document.getElementById("numbersContainer");
+let opContainer = document.getElementById("operatorsContainer");
 
 //--Operations--//
 function add(a, b) {
@@ -71,7 +73,37 @@ function isNumberChar(string) {
   return string >= "0" && string <= "9";
 }
 
+//--Buttons--//
+function spawnButtons() {
+  let clrBtn = createButton("Clear");
+  numContainer.appendChild(clrBtn);
+
+  for (let i = 0; i < 10; i++) {
+    let nBtn = createButton(i);
+    numContainer.appendChild(nBtn);
+  }
+
+  let keys = Object.keys(OPERATORS);
+  for (let i = 0; i < keys.length; i++) {
+    let oBtn = createButton(keys[i]);
+    opContainer.appendChild(oBtn);
+  }
+
+  let etrBtn = createButton("Enter");
+  opContainer.appendChild(etrBtn);
+}
+
+function createButton(string) {
+  let tempBtn = document.createElement("button");
+  tempBtn.textContent = string;
+  return tempBtn;
+}
+
 //--Event Listeners--//
+document.addEventListener("DOMContentLoaded", function () {
+  spawnButtons();
+});
+
 document.addEventListener("keypress", function (event) {
   if (isNumberChar(event.key)) {
     if (operator == null) {
