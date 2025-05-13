@@ -15,6 +15,7 @@ let operator = null;
 let inputField = document.getElementById("inputField");
 let numContainer = document.getElementById("numbersContainer");
 let opContainer = document.getElementById("operatorsContainer");
+let bContainer = document.getElementById("buttonsContainer");
 
 //--Operations--//
 function add(a, b) {
@@ -32,7 +33,7 @@ function multiply(a, b) {
 function divide(a, b) {
   if (b == 0) {
     showWarning("Can't divide by zero!");
-    return;
+    return 0;
   }
   return a / b;
 }
@@ -44,10 +45,12 @@ function operate() {
   }
 
   let result = OPERATORS[operator].func(numA, numB);
-  inputField.textContent = result;
+  console.log(numA + operator + numB + "=" + result);
+
   numA = result;
   numB = 0;
   operator = null;
+  inputField.textContent = numA;
 }
 
 function appendToDisplay(text) {
@@ -62,7 +65,7 @@ function appendToDisplay(text) {
 }
 
 function showWarning(string) {
-  console.log(string);
+  console.error(string);
 }
 
 function hasOperator(string) {
@@ -76,32 +79,84 @@ function isNumberChar(string) {
 //--Buttons--//
 function spawnButtons() {
   let clrBtn = createButton("Clear");
-  numContainer.appendChild(clrBtn);
+  clrBtn.classList.add("larger-button");
+  bContainer.appendChild(clrBtn);
 
   for (let i = 0; i < 10; i++) {
     let nBtn = createButton(i);
-    numContainer.appendChild(nBtn);
+    bContainer.appendChild(nBtn);
   }
 
   let keys = Object.keys(OPERATORS);
   for (let i = 0; i < keys.length; i++) {
     let oBtn = createButton(keys[i]);
-    opContainer.appendChild(oBtn);
+    bContainer.appendChild(oBtn);
   }
 
   let etrBtn = createButton("Enter");
-  opContainer.appendChild(etrBtn);
+  etrBtn.classList.add("larger-button");
+  bContainer.appendChild(etrBtn);
 }
 
 function createButton(string) {
   let tempBtn = document.createElement("button");
   tempBtn.textContent = string;
+  tempBtn.onclick = function () {
+    handleButtonClick(string);
+  };
   return tempBtn;
+}
+
+function handleButtonClick(string) {
+  switch (true) {
+    case string == "Clear":
+      clearInputField();
+      break;
+    case string == "Enter":
+      operate();
+      break;
+    case isNumberChar(string):
+      appendCharToNumber(string);
+      break;
+    case hasOperator(string):
+      setOperator(string);
+      break;
+    default:
+      break;
+  }
+}
+
+function appendCharToNumber(string) {
+  if (operator != null) {
+    numB = Number(String(numB) + string);
+    inputField.textContent = numB;
+    console.log(numA + operator + numB);
+  } else {
+    numA = Number(String(numA) + string);
+    inputField.textContent = numA;
+    console.log(numA);
+  }
+}
+
+function setOperator(string) {
+  operator = string;
+  inputField.textContent = operator;
+  console.log(numA + operator);
+}
+
+//--Input Field--//
+function clearInputField() {
+  numA = 0;
+  numB = 0;
+  operator = null;
+  inputField.textContent = numA;
+  console.log("Input cleared!");
 }
 
 //--Event Listeners--//
 document.addEventListener("DOMContentLoaded", function () {
   spawnButtons();
+  clearInputField();
 });
 
 document.addEventListener("keypress", function (event) {
