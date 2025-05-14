@@ -80,21 +80,33 @@ function isNumberChar(string) {
 function spawnButtons() {
   let clrBtn = createButton("Clear");
   clrBtn.classList.add("larger-button");
+  clrBtn.id = "clear";
   bContainer.appendChild(clrBtn);
+
+  let delBtn = createButton("Delete");
+  delBtn.id = "delete";
+  bContainer.appendChild(delBtn);
+
+  let decBtn = createButton(".");
+  decBtn.classList.add("number");
+  bContainer.appendChild(decBtn);
 
   for (let i = 0; i < 10; i++) {
     let nBtn = createButton(i);
+    nBtn.classList.add("number");
     bContainer.appendChild(nBtn);
   }
 
   let keys = Object.keys(OPERATORS);
   for (let i = 0; i < keys.length; i++) {
     let oBtn = createButton(keys[i]);
+    oBtn.classList.add("operator");
     bContainer.appendChild(oBtn);
   }
 
   let etrBtn = createButton("Enter");
   etrBtn.classList.add("larger-button");
+  etrBtn.id = "enter";
   bContainer.appendChild(etrBtn);
 }
 
@@ -103,6 +115,7 @@ function createButton(string) {
   tempBtn.textContent = string;
   tempBtn.onclick = function () {
     handleButtonClick(string);
+    tempBtn.blur();
   };
   return tempBtn;
 }
@@ -110,6 +123,7 @@ function createButton(string) {
 function handleButtonClick(string) {
   switch (true) {
     case string == "Clear":
+    case string == "Escape":
       clearInputField();
       break;
     case string == "Enter":
@@ -159,18 +173,6 @@ document.addEventListener("DOMContentLoaded", function () {
   clearInputField();
 });
 
-document.addEventListener("keypress", function (event) {
-  if (isNumberChar(event.key)) {
-    if (operator == null) {
-      numB = event.key;
-      inputField.textContent = numB;
-    } else {
-      numA = event.key;
-      inputField.textContent = numA;
-    }
-  }
-  if (hasOperator(event.key)) {
-    operator = event.key;
-    inputField.textContent = operator;
-  }
+document.addEventListener("keydown", function (event) {
+  handleButtonClick(event.key);
 });

@@ -2,30 +2,87 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px;
-  height: 400px;
-  margin: 0 auto;
-  background-color: beige;
+  width: 320px;
+  height: 450px;
+  margin: 50px auto;
+  background: linear-gradient(145deg, #f0f0f0, #e6e6e6);
+  border-radius: 20px;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1),
+    -10px -10px 30px rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  font-family: "Arial", sans-serif;
 }
 
 #inputField {
-  background-color: white;
-  width: 95%;
+  background-color: #f8f9fa;
+  width: 90%;
+  height: 60px;
+  margin: 15px 0;
+  padding: 10px;
   text-align: right;
+  font-size: 1.8rem;
+  border: none;
+  border-radius: 10px;
+  box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.05),
+    inset -5px -5px 10px rgba(255, 255, 255, 0.8);
 }
 
 button {
-  flex-grow: 1;
-  width: 55px;
+  background: linear-gradient(145deg, #f0f0f0, #e6e6e6);
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1),
+    -5px -5px 10px rgba(255, 255, 255, 0.8);
+}
+
+button:hover {
+  background: linear-gradient(145deg, #e6e6e6, #f0f0f0);
+  transform: translateY(-2px);
+}
+
+button:active {
+  box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.1),
+    inset -5px -5px 10px rgba(255, 255, 255, 0.8);
+  transform: translateY(0);
 }
 
 .larger-button {
-  flex-grow: 100;
+  grid-column: span 2;
 }
 
 #buttonsContainer {
   width: 90%;
-  height: 90%;
-  display: flex;
-  flex-wrap: wrap;
+  height: 80%;
+  display: grid;
+  gap: 10px;
+  justify-content: center;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: minmax(50px, auto) repeat(4, 1fr);
+  padding: 10px;
+}
+
+/* Operator buttons styling */
+.operator {
+  background: linear-gradient(145deg, #e0e8f0, #c8d0e0);
+}
+
+/* Number buttons styling */
+.number {
+  color: #333;
+}
+
+/* Equal button styling */
+#enter {
+  background: linear-gradient(145deg, #36d1dc, #5b86e5);
+  color: white;
+}
+
+/* Clear button styling */
+#clear {
+  background: linear-gradient(145deg, #fc466b, #3f5efb);
+  color: white;
 }
