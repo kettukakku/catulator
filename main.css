@@ -86,3 +86,54 @@ button:active {
   background: linear-gradient(145deg, #fc466b, #3f5efb);
   color: white;
 }
+
+
+/* Error popup styling */
+.error-popup {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(145deg, #ff6b6b, #ff8e8e);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 250px;
+  max-width: 80%;
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+}
+
+.hidden {
+  display: none;
+}
+
+#closeError {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  margin-left: 15px;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+#closeError:hover {
+  transform: scale(1.2);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}

@@ -12,10 +12,12 @@ let numB = 0;
 let operator = null;
 
 //--HTML Elements--//
-let inputField = document.getElementById("inputField");
-let numContainer = document.getElementById("numbersContainer");
-let opContainer = document.getElementById("operatorsContainer");
-let bContainer = document.getElementById("buttonsContainer");
+const inputField = document.getElementById("inputField");
+const numContainer = document.getElementById("numbersContainer");
+const opContainer = document.getElementById("operatorsContainer");
+const bContainer = document.getElementById("buttonsContainer");
+const errorPopup = document.getElementById("errorPopup");
+const errorMessage = document.getElementById("errorMessage");
 
 //--Operations--//
 function add(a, b) {
@@ -44,7 +46,10 @@ function operate() {
     return;
   }
 
-  let result = OPERATORS[operator].func(numA, numB);
+  let a = typeof numA === "string" ? parseFloat(numA) : numA;
+  let b = typeof numB === "string" ? parseFloat(numB) : numB;
+
+  let result = OPERATORS[operator].func(a, b);
   console.log(numA + operator + numB + "=" + result);
 
   numA = result;
@@ -65,6 +70,13 @@ function appendToDisplay(text) {
 }
 
 function showWarning(string) {
+  errorMessage.textContent = string;
+  errorPopup.classList.remove("hidden");
+
+  setTimeout(() => {
+    errorPopup.classList.add("hidden");
+  }, 2000);
+
   console.error(string);
 }
 
@@ -88,7 +100,6 @@ function spawnButtons() {
   bContainer.appendChild(delBtn);
 
   let decBtn = createButton(".");
-  decBtn.classList.add("number");
   bContainer.appendChild(decBtn);
 
   for (let i = 0; i < 10; i++) {
@@ -126,8 +137,15 @@ function handleButtonClick(string) {
     case string == "Escape":
       clearInputField();
       break;
+    case string == "Backspace":
+    case string == "Delete":
+      deleteChar();
+      break;
     case string == "Enter":
       operate();
+      break;
+    case string == ".":
+      setDecimal();
       break;
     case isNumberChar(string):
       appendCharToNumber(string);
@@ -156,6 +174,34 @@ function setOperator(string) {
   operator = string;
   inputField.textContent = operator;
   console.log(numA + operator);
+}
+
+function setDecimal() {
+  if (operator != null) {
+    if (!String(numB).includes(".")) {
+      numB = String(numB) + ".";
+      inputField.textContent = numB;
+      console.log(numA + operator + numB);
+    }
+  } else {
+    if (!String(numA).includes(".")) {
+      numA = String(numA) + ".";
+      inputField.textContent = numA;
+      console.log(numA);
+    }
+  }
+}
+
+function deleteChar() {
+  if (operator != null) {
+    numB = String(numB).slice(0, -1);
+    inputField.textContent = numB;
+    console.log(numA + operator + numB);
+  } else {
+    numA = String(numA).slice(0, -1);
+    inputField.textContent = numA;
+    console.log(numA);
+  }
 }
 
 //--Input Field--//
